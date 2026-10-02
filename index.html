@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="SIPADU - Sistem Informasi Persuratan Terpadu">
+  <title>SIPADU | Sistem Informasi Persuratan Terpadu</title>
+
+  <style>
+    :root {
+      --navy: #0f172a;
+      --blue: #1d4ed8;
+      --cyan: #06b6d4;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: rgba(148, 163, 184, 0.22);
+      --white: #ffffff;
+      --surface: rgba(255, 255, 255, 0.92);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(6, 182, 212, 0.16), transparent 30%),
+        radial-gradient(circle at 85% 15%, rgba(37, 99, 235, 0.20), transparent 32%),
+        linear-gradient(135deg, #eff6ff 0%, #f8fafc 48%, #eef2ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 18px;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(2px);
+      z-index: 0;
+    }
+
+    body::before {
+      width: 260px;
+      height: 260px;
+      left: -90px;
+      bottom: -80px;
+      background: rgba(29, 78, 216, 0.10);
+    }
+
+    body::after {
+      width: 220px;
+      height: 220px;
+      right: -70px;
+      top: -65px;
+      background: rgba(6, 182, 212, 0.11);
+    }
+
+    .shell {
+      width: min(1040px, 100%);
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      border-radius: 28px;
+      box-shadow:
+        0 30px 80px rgba(15, 23, 42, 0.16),
+        0 10px 30px rgba(37, 99, 235, 0.08);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      min-height: 520px;
+    }
+
+    .hero-content {
+      padding: 62px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .brand-mark {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 27px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 28px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-text span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      margin-bottom: 18px;
+      border-radius: 999px;
+      background: rgba(29, 78, 216, 0.08);
+      color: #1e40af;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.03;
+      letter-spacing: -1.8px;
+    }
+
+    .lead {
+      margin: 20px 0 0;
+      max-width: 680px;
+      font-size: 17px;
+      line-height: 1.75;
+      color: #475569;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .button-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #2563eb);
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.24);
+    }
+
+    .button-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(37, 99, 235, 0.30);
+    }
+
+    .button-secondary {
+      color: #1e293b;
+      background: #f8fafc;
+      border: 1px solid #dbe3ee;
+    }
+
+    .button-secondary:hover {
+      transform: translateY(-2px);
+      background: #fff;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .feature {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(248, 250, 252, 0.78);
+    }
+
+    .feature-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .feature strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .feature span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 34px;
+      background:
+        radial-gradient(circle at 40% 30%, rgba(6, 182, 212, 0.20), transparent 27%),
+        linear-gradient(155deg, #0f172a 0%, #172554 52%, #1d4ed8 100%);
+      color: white;
+    }
+
+    .panel {
+      width: min(360px, 100%);
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    .panel-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .panel-title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .live {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.18);
+      color: #bbf7d0;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .mock-stat {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .mock-card {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .mock-card span {
+      display: block;
+      color: #cbd5e1;
+      font-size: 10px;
+    }
+
+    .mock-card strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 24px;
+    }
+
+    .progress {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11px;
+      color: #e2e8f0;
+    }
+
+    .bar {
+      height: 8px;
+      margin-top: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.10);
+    }
+
+    .bar i {
+      display: block;
+      width: 78%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cyan), #60a5fa);
+    }
+
+    .footer {
+      padding: 18px 24px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 320px;
+      }
+
+      .hero-content {
+        padding: 42px 28px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 460px) {
+      body {
+        padding: 12px;
+      }
+
+      .card {
+        border-radius: 20px;
+      }
+
+      .hero-content {
+        padding: 32px 20px;
+      }
+
+      .brand-mark {
+        width: 56px;
+        height: 56px;
+      }
+
+      .brand-text strong {
+        font-size: 24px;
+      }
+
+      .lead {
+        font-size: 15px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-visual {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="shell">
+    <section class="card">
+      <div class="hero">
+        <div class="hero-content">
+          <div class="brand">
+            <div class="brand-mark">S</div>
+            <div class="brand-text">
+              <strong>SIPADU</strong>
+              <span>Sistem Informasi Persuratan Terpadu</span>
+            </div>
+          </div>
+
+          <div class="eyebrow">Portal Aplikasi Persuratan</div>
+
+          <h1>Kelola persuratan secara terpadu.</h1>
+
+          <p class="lead">
+            Akses aplikasi SIPADU untuk mengelola surat masuk, verifikasi,
+            disposisi Kepala Dinas, tindak lanjut bidang, monitoring,
+            dan laporan persuratan dalam satu sistem.
+          </p>
+
+          <div class="actions">
+            <a
+              class="button button-primary"
+              href="https://script.google.com/macros/s/AKfycbyzAjB-ffXn4JvAZPhNsfc4yXaidvXjhjde5a2VfylempB6dMu9DkvZ4Fy6lsxBEsk6_A/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              🚀 Buka SIPADU
+            </a>
+
+            <a class="button button-secondary" href="#fitur">
+              Lihat Fitur
+            </a>
+          </div>
+
+          <div class="features" id="fitur">
+            <div class="feature">
+              <div class="feature-icon">📥</div>
+              <strong>Surat Masuk</strong>
+              <span>Pencatatan dan pengelolaan surat secara terpusat.</span>
+            </div>
+
+            <div class="feature">
+              <div class="feature-icon">📋</div>
+              <strong>Disposisi</strong>
+              <span>Alur disposisi dan tindak lanjut terstruktur.</span>
+            </div>
+
+            <div class="feature">
+              <div class="feature-icon">📊</div>
+              <strong>Monitoring & Laporan</strong>
+              <span>Pemantauan status dan rekap persuratan.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="panel">
+            <div class="panel-top">
+              <div class="panel-title">SIPADU Dashboard</div>
+              <div class="live">ONLINE</div>
+            </div>
+
+            <div class="mock-stat">
+              <div class="mock-card">
+                <span>SURAT MASUK</span>
+                <strong>—</strong>
+              </div>
+              <div class="mock-card">
+                <span>DISPOSISI</span>
+                <strong>—</strong>
+              </div>
+              <div class="mock-card">
+                <span>PROSES</span>
+                <strong>—</strong>
+              </div>
+              <div class="mock-card">
+                <span>SELESAI</span>
+                <strong>—</strong>
+              </div>
+            </div>
+
+            <div class="progress">
+              <div class="progress-row">
+                <span>Portal SIPADU</span>
+                <strong>Siap digunakan</strong>
+              </div>
+              <div class="bar"><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        SIPADU · Sistem Informasi Persuratan Terpadu
+      </footer>
+    </section>
+  </main>
+</body>
+</html>
